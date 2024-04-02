@@ -19,7 +19,7 @@ if(logged_in() === false){
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Asset Management System</title>
     
-    </style>
+    
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" type="text/css" media="screen" href="css/screen.css">
     <link rel="stylesheet" href="css/home.css" />
