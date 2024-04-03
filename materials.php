@@ -36,7 +36,7 @@ if(logged_in() === false){
 
     <div class="content-center">
         <div id="topic">Materials Assets</div>
-        <a href="add.php"><div id="add-new">Purchase</div></a><a href="recouring.php"><div id="add-new">Recouring</div></a><a href="export1.php"><div id="add-new">Export</div></a>
+        <a href="add.php"><div id="add-new">Purchase</div></a><a href="recouring.php"><div id="add-new">Recouring</div></a><a href="export1.php"><div id="add-new">Export</div></a><a href="view_assign1.php"><div id="add-new">View Assign</div></a>
         <table border="0">
             <tr>
                 <th>Bill-No</th>
@@ -47,6 +47,8 @@ if(logged_in() === false){
                 <th>Price</th>
                 <th>Total price</th>
                 <th>Assign</th>
+                <th></th>
+                <th></th>
             </tr>
             <?php
             $id = $user_data['id'];
@@ -75,7 +77,9 @@ if(logged_in() === false){
                         <a href=\"delete1.php?delete_id=".$row['id']."\"><img src='images/icons/delete.ico' height='24'/></a>
                         <a href=\"update1.php?id=".$row['id']."\"><img src='images/icons/edit.png' alt='' height='24'/></a>
                         <a href=\"assign1.php?item_name=".$row['item_names']."\"><img src='images/icons/assign.png' alt='' height='24'/></a>
+                        
                     </td>";
+                    echo "<td style='text-align: center'><a href=\"view.php?id=".$row['id']."\"><button>View</button></a></td>";
                 
                 echo '</tr>';
             }

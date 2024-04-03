@@ -28,8 +28,15 @@ if(isset($_POST['add_asset'])) {
         $rates = $_POST['rate'];
         $quantities = $_POST['quantity'];
 
+        // File upload
+        $file_name = $_FILES['transaction_file']['name'];
+        $file_tmp = $_FILES['transaction_file']['tmp_name'];
+        $file_destination = 'D:/DARSHAN/xampp/htdocs/Assets-management-system-in-php-master/uploads/' . $file_name;
+move_uploaded_file($file_tmp, $file_destination);
+
+
         // Insert data into database
-        if(addAsset($con, $bill_no, $supplier_name, $transaction_date, $total_amount, $item_names, $rates, $quantities, $user_data)) {
+        if(addAsset($con, $bill_no, $supplier_name, $transaction_date, $total_amount, $item_names, $rates, $quantities, $file_destination, $user_data)) {
             // Redirect after successful addition
             header('Location:recouring.php?success');
             exit();
@@ -51,16 +58,16 @@ if(empty($_POST['add_asset']) === false && !empty($errors)) {
 }
 
 // Function to insert data into database
-function addAsset($con, $bill_no, $supplier_name, $transaction_date, $total_amount, $item_names, $rates, $quantities, $user_data) {
+function addAsset($con, $bill_no, $supplier_name, $transaction_date, $total_amount, $item_names, $rates, $quantities, $file_destination, $user_data) {
     // Prepare and execute query to insert data
-    $query = "INSERT INTO materials (userid, bill_no, supplier_name, transaction_date, item_names, rates, quantity,sw1,sw2,sw3,sw4,sw5,sw6) VALUES (?, ?, ?, ?, ?, ?, ?,0,0,0,0,0,0)";
+    $query = "INSERT INTO materials (userid, bill_no, supplier_name, transaction_date, item_names, rates, quantity, transaction_file, sw1, sw2, sw3, sw4, sw5, sw6) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0, 0, 0, 0)";
     $stmt = $con->prepare($query);
 
     // Get user ID
     $userid = $user_data['id'];
 
     // Bind parameters
-    $stmt->bind_param("issssss", $userid, $bill_no, $supplier_name, $transaction_date, $item_name, $rate, $quantity);
+    $stmt->bind_param("isssssss", $userid, $bill_no, $supplier_name, $transaction_date, $item_name, $rate, $quantity, $file_destination);
 
     // Iterate through items and insert each into the database
     foreach ($item_names as $key => $item_name) {
@@ -90,22 +97,22 @@ function addAsset($con, $bill_no, $supplier_name, $transaction_date, $total_amou
 </head>
 <body>
 <div id="page">
-        <header>
-            <a title="asset" href="">
-                <div class="logo">
-                    <img src="images/logo.png" height="66px" weight="66px" />
-                    <span id="title">Asset Management System</span>
-                </div>
-            </a>
+    <header>
+        <a title="asset" href="">
+            <div class="logo">
+                <img src="images/logo.png" height="66px" weight="66px" />
+                <span id="title">Asset Management System</span>
+            </div>
+        </a>
 
-            <nav>
-                <label for="email"><?php echo $user_data['first_name']; ?> </label>
-                <a href="home.php"><input type="image" src="images/icons/home.png" title="Home" value="home " style="margin-left:10px;"/></a>
-                <a href="profile.php"><input type="image" src="images/icons/user.png" name="setting" value="settings " style="margin-left:10px;font-weight:bold;"/></a>
-                <a href="logout.php"><input type="image" src="images/icons/logout.png" name="logout" value="Sign Out" style="margin-left:10px;font-weight:bold;"/></a>
+        <nav>
+            <label for="email"><?php echo $user_data['first_name']; ?> </label>
+            <a href="home.php"><input type="image" src="images/icons/home.png" title="Home" value="home " style="margin-left:10px;"/></a>
+            <a href="profile.php"><input type="image" src="images/icons/user.png" name="setting" value="settings " style="margin-left:10px;font-weight:bold;"/></a>
+            <a href="logout.php"><input type="image" src="images/icons/logout.png" name="logout" value="Sign Out" style="margin-left:10px;font-weight:bold;"/></a>
 
-            </nav>
-        </header>
+        </nav>
+    </header>
     <br><br>
 
 <?php
@@ -134,7 +141,7 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
 ?>
 
 <div id='add-item-form'>
-    <form name="add-asset" method='POST' action='recouring.php'>
+    <form name="add-asset" method='POST' action='recouring.php' enctype="multipart/form-data">
         <table border=0>
             <tr>
                 <td id='label-col'>
@@ -160,12 +167,22 @@ if (isset($_GET['success']) && empty($_GET['success'])) {
                     <input type='date' name='transaction_date' required>
                 </td>
             </tr>
+            <!-- File Upload Section -->
+            <tr>
+                <td id='label-col'>
+                    <label>Upload Transaction File</label>
+                </td>
+                <td id='input-col'>
+                    <input type='file' name='transaction_file' required>
+                </td>
+            </tr>
+            <!-- End of File Upload Section -->
             <!-- Here starts the section for adding multiple items -->
             <tr>
                 <td colspan="2">
                     <h3>Add Items</h3>
                 </td>
-                </tr>
+            </tr>
             <tr>
                 <td colspan="2" id="itemRows">
                     <input type='text' name='item_name[]' placeholder="Item Name*" required>

@@ -1,4 +1,3 @@
-
 <?php 
 require 'core/init.php';
 
@@ -10,7 +9,6 @@ if(logged_in() === false){
 
 } 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,7 +45,7 @@ if(logged_in() === false){
 
         <div class="content-center">
             <div id="topic">Purchase Assets</div>
-            <a href="add.php"><div id="add-new">Purchase</div></a><a href="recouring.php"><div id="add-new">Recouring</div></a><a href="export.php"><div id="add-new">Export</div></a>
+            <a href="add.php"><div id="add-new">Purchase</div></a><a href="recouring.php"><div id="add-new">Recouring</div></a><a href="export.php"><div id="add-new">Export</div></a><a href="view_assign.php"><div id="add-new">View_Assign</div></a>
             <table border=0>
             <tr>
                 <th>Title</th>
@@ -56,9 +54,9 @@ if(logged_in() === false){
                 <th>Price</th>
                 <th>Total price</th>
                 <th>Supplier Name</th>
-                <th>Acadamic Year</th>
-                <th>Assign</th>
+                <th>Academic Year</th>
                 <th>Date</th>
+                <th></th> <!-- New header for the button -->
             </tr>
             <?php
                 $id = $user_data['id'];
@@ -80,18 +78,14 @@ if(logged_in() === false){
                     echo '<td style="text-align: center">'.'Rs '.$row['quantity'] * $row['price'] . '</td>';
                     echo '<td style="text-align: center">' . $row['supplier_name'] . '</td>';
                     echo '<td style="text-align: center">' . $row['acadamic_year'] . '</td>';
-                    echo '<td style="text-align: center">' . $row['assign'] . '</td>';
                     echo '<td style="text-align: center">' . $row['date'] . '</td>';
                     echo "<td style='text-align: center'><a href=\"delete.php?id=".$row['id']."\"><img src='images/icons/delete.ico' height='24'/></a></td>";
                     echo "<td style='text-align: center'><a href=\"update.php?id=".$row['id']."\"><img src='images/icons/edit.png' alt='' height='24'/></a></td>";
                     echo "<td style='text-align: center'><a href=\"assign.php?id=".$row['id']."\"><img src='images/icons/assign.png' alt='' height='24'/></a></td>";
+                    // New button code
+                    echo "<td style='text-align: center'><a href=\"new_action.php?id=".$row['id']."\"><button>View</button></a></td>";
                     echo '</tr>';
-
-
-                    
-                    
             }
-
             ?>
             </table>
             <a href="report.php"><div id="report">Generate Report</div></a>
