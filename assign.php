@@ -2,9 +2,11 @@
 require 'core/init.php';
 error_reporting(0);
 if(logged_in() === false){
+
     session_destroy();
     header('Location:index.php');
     exit();
+
 }
 ?>
 
@@ -47,15 +49,8 @@ if(logged_in() === false){
     <div class="content-center">
         <div id="topic"><h3><?php echo $asset_data['title'];?></h3></div>
 
-
-            <table border=0>
-                <form action="" method="post">
-                <tr>
-                    <th>Assign</th>
-                </tr>
-                <tr>
-                    <td><input style="text-align: center" type="text" value="<?php echo $asset_data['assign'];?>" name="assign"></td>
-                </tr>
+        <form action="" method="post">
+            <table border="0">
                 <tr>
                     <th>SW1</th>
                     <th>SW2</th>
@@ -73,48 +68,58 @@ if(logged_in() === false){
                     <td><input style="text-align: center" type="number" value="<?php echo $asset_data['sw6'];?>" name="sw6"></td>
                 </tr>
                 <tr>
-                    <th>Faculty Name1</th>
-                    <th>Faculty Name2</th>
-                    <th>Faculty Name3</th>
-                    <th>Faculty Name4</th>
-                    <th>Faculty Name5</th>
-                    <th>Faculty Name6</th>    
+                    <th>Faculty1</th>
+                    <th>Faculty2</th>
+                    <th>Faculty3</th>
+                    <th>Faculty4</th>
+                    <th>Faculty5</th>
+                    <th>Faculty6</th>
                 </tr>
                 <tr>
-                    <td><input style="text-align: center" type="text" value="<?php echo $asset_data['faculty1'];?>" name="faculty1"></td>
-                    <td><input style="text-align: center" type="text" value="<?php echo $asset_data['faculty2'];?>" name="faculty2"></td>
-                    <td><input style="text-align: center" type="text" value="<?php echo $asset_data['faculty3'];?>" name="faculty3"></td>
-                    <td><input style="text-align: center" type="text" value="<?php echo $asset_data['faculty4'];?>" name="faculty4"></td>
-                    <td><input style="text-align: center" type="text" value="<?php echo $asset_data['faculty5'];?>" name="faculty5"></td>
-                    <td><input style="text-align: center" type="text" value="<?php echo $asset_data['faculty6'];?>" name="faculty6"></td>
+                    <td><input style="text-align: center" type="text" value="<?php echo isset($_POST['faculty1']) ? $_POST['faculty1'] : $asset_data['faculty1']; ?>" name="faculty1"></td>
+                    <td><input style="text-align: center" type="text" value="<?php echo isset($_POST['faculty2']) ? $_POST['faculty2'] : $asset_data['faculty2']; ?>" name="faculty2"></td>
+                    <td><input style="text-align: center" type="text" value="<?php echo isset($_POST['faculty3']) ? $_POST['faculty3'] : $asset_data['faculty3']; ?>" name="faculty3"></td>
+                    <td><input style="text-align: center" type="text" value="<?php echo isset($_POST['faculty4']) ? $_POST['faculty4'] : $asset_data['faculty4']; ?>" name="faculty4"></td>
+                    <td><input style="text-align: center" type="text" value="<?php echo isset($_POST['faculty5']) ? $_POST['faculty5'] : $asset_data['faculty5']; ?>" name="faculty5"></td>
+                    <td><input style="text-align: center" type="text" value="<?php echo isset($_POST['faculty6']) ? $_POST['faculty6'] : $asset_data['faculty6']; ?>" name="faculty6"></td>
                 </tr>
                 <tr>
                     <td><input type="submit" name="update" value="Assign"></td>
                 </tr>
-                </form>
             </table>
+        </form>
 
         <?php
             if(isset($_POST['update']) && !empty($_POST['update'])){
-                $update_data = array(
-                    'assign'   => $_POST['assign'],
-                    'sw1'      => $_POST['sw1'],
-                    'sw2'      => $_POST['sw2'],
-                    'sw3'      => $_POST['sw3'],
-                    'sw4'      => $_POST['sw4'],
-                    'sw5'      => $_POST['sw5'],
-                    'sw6'      => $_POST['sw6'],
-                    'faculty1' => $_POST['faculty1'],
-                    'faculty2' => $_POST['faculty2'],
-                    'faculty3' => $_POST['faculty3'],
-                    'faculty4' => $_POST['faculty4'],
-                    'faculty5' => $_POST['faculty5'],
-                    'faculty6' => $_POST['faculty6']
-                );
+                // Calculate the total of sw1 to sw6
+                $total_sw = $_POST['sw1'] + $_POST['sw2'] + $_POST['sw3'] + $_POST['sw4'] + $_POST['sw5'] + $_POST['sw6'];
+                
+                // Check if total is greater than quantity
+                if($total_sw > $asset_data['quantity']) {
+                    echo "<p style='color: red;'>Total quantity of SW exceeds asset quantity!</p>";
+                } else {
+                    // Proceed with updating assets
+                    $update_data = array(
+                        // 'assign'  => $_POST['assign'],
+                        'sw1'     => $_POST['sw1'],
+                        'sw2'     => $_POST['sw2'],
+                        'sw3'     => $_POST['sw3'],
+                        'sw4'     => $_POST['sw4'],
+                        'sw5'     => $_POST['sw5'],
+                        'sw6'     => $_POST['sw6'],
+                        'assign' => $total_sw, // Change to 'assign' instead of 'total_sw'
+                        'faculty1' => $_POST['faculty1'],
+                        'faculty2' => $_POST['faculty2'],
+                        'faculty3' => $_POST['faculty3'],
+                        'faculty4' => $_POST['faculty4'],
+                        'faculty5' => $_POST['faculty5'],
+                        'faculty6' => $_POST['faculty6']
+                    );
 
-                update_assets($con, $update_data, $id);
-                header('Location:home.php');
-                exit();
+                    update_assets($con, $update_data, $id);
+                    header('Location:home.php');
+                    exit();
+                }
             }
         ?>
 

@@ -56,6 +56,7 @@ if(logged_in() === false){
                 <th>Supplier Name</th>
                 <th>Academic Year</th>
                 <th>Date</th>
+                <th>Assign</th>
                 <th></th> <!-- New header for the button -->
             </tr>
             <?php
@@ -79,6 +80,7 @@ if(logged_in() === false){
                     echo '<td style="text-align: center">' . $row['supplier_name'] . '</td>';
                     echo '<td style="text-align: center">' . $row['acadamic_year'] . '</td>';
                     echo '<td style="text-align: center">' . $row['date'] . '</td>';
+                    echo '<td style="text-align: center">' . $row['assign'] . '</td>';
                     echo "<td style='text-align: center'><a href=\"delete.php?id=".$row['id']."\"><img src='images/icons/delete.ico' height='24'/></a></td>";
                     echo "<td style='text-align: center'><a href=\"update.php?id=".$row['id']."\"><img src='images/icons/edit.png' alt='' height='24'/></a></td>";
                     echo "<td style='text-align: center'><a href=\"assign.php?id=".$row['id']."\"><img src='images/icons/assign.png' alt='' height='24'/></a></td>";

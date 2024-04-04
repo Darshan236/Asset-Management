@@ -8,44 +8,58 @@ if(logged_in() === false){
     exit();
 } 
 
-// Retrieve data from the materials_assign table
-$result = $con->query("SELECT * FROM materials_assign");
+// Fetch data from the database
+$result = $con->query("SELECT * FROM materials");
 
 // Initialize the Excel data variable
 $data = "
 <table border='1'>
     <tr>
-        <th>Material ID</th>
-        <th>Item Names</th>
-        <th>Lab Name</th>
-        <th>Assign Number</th>
-        <th>Faculty Name</th>
-        <th>Faculty Assign Number</th>
+        <th>ID</th>
+        <th>sw1</th>
+        <th>faculty1</th>
+        <th>sw2</th>
+        <th>faculty2</th>
+        <th>sw3</th>
+        <th>faculty3</th>
+        <th>sw4</th>
+        <th>faculty4</th>
+        <th>sw5</th>
+        <th>faculty5</th>
+        <th>sw6</th>
+        <th>faculty6</th>
     </tr>";
 
-// Check if there are rows in the result
+// Check if there are any rows returned
 if ($result->num_rows > 0) {
-    // Append data to the Excel variable
-    while($row = $result->fetch_assoc()) {
+    // Loop through each row and append data to the Excel variable
+    while ($row = $result->fetch_assoc()) {
         $data .= "<tr>";
-        $data .= "<td>" . $row["material_id"] . "</td>";
-        $data .= "<td>" . $row["item_names"] . "</td>";
-        $data .= "<td>" . $row["lab_name"] . "</td>";
-        $data .= "<td>" . $row["assign_number"] . "</td>";
-        $data .= "<td>" . $row["faculty_name"] . "</td>";
-        $data .= "<td>" . $row["faculty_assign_number"] . "</td>";
+        $data .= "<td>" . $row["id"] . "</td>";
+        $data .= "<td>" . $row["sw1"] . "</td>";
+        $data .= "<td>" . $row["faculty1"] . "</td>";
+        $data .= "<td>" . $row["sw2"] . "</td>";
+        $data .= "<td>" . $row["faculty2"] . "</td>";
+        $data .= "<td>" . $row["sw3"] . "</td>";
+        $data .= "<td>" . $row["faculty3"] . "</td>";
+        $data .= "<td>" . $row["sw4"] . "</td>";
+        $data .= "<td>" . $row["faculty4"] . "</td>";
+        $data .= "<td>" . $row["sw5"] . "</td>";
+        $data .= "<td>" . $row["faculty5"] . "</td>";
+        $data .= "<td>" . $row["sw6"] . "</td>";
+        $data .= "<td>" . $row["faculty6"] . "</td>";
         $data .= "</tr>";
     }
 } else {
     // If no rows are returned, display a message
-    $data .= "<tr><td colspan='6'>No data found.</td></tr>";
+    $data .= "<tr><td colspan='13'>No data found</td></tr>";
 }
 
 // Close the table tag
 $data .= "</table>";
 
 // Define the file name
-$name = "Materials_Assignments_" . date("d-m-Y");
+$name = "Assigned_Assets_" . date("d-m-Y");
 
 // Set the headers for file download
 header("Content-Type: application/xls");

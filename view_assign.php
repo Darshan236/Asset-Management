@@ -20,20 +20,22 @@ if(logged_in() === false){
 </head>
 <body>
     <div id="page">
-        <header>
-            <a title="asset" href="home.php">
-                <div class="logo">
-                    <img src="images/logo.png" height="66px" weight="66px" />
-                </div>
-            </a>
-            <span id="title">Asset Management System</span>
-            <nav>
-                <label for="email">Welcome <?php echo $user_data['first_name']; ?> </label>
-                <a href="home.php"><input type="image" src="images/icons/home.png" title="Home" value="home " style="margin-left:10px;"/></a>
-                <a href="profile.php"><input type="image" src="images/icons/user.png" title="Profile" value="settings " style="margin-left:10px;"/></a>
-                <a href="logout.php"><input type="image" src="images/icons/logout.png" title="Logout" value="Sign Out" style="margin-left:10px;"/></a>
-            </nav>
-        </header>
+    <header>
+        <a title="asset" href="home.php">
+            <div class="logo">
+                <img src="images/logo.png" height="66px" weight="66px" />
+                <span id="title">Asset Management System</span>
+            </div>
+        </a>
+
+        <nav>
+            <label for="email">Welcome <?php echo $user_data['first_name']; ?> </label>
+            <a href="home.php"><input type="image" src="images/icons/home.png" title="Home" value="home " style="margin-left:10px;"/></a>
+            <a href="profile.php"><input type="image" src="images/icons/user.png" title="Profile" value="settings " style="margin-left:10px;"/></a>
+            <a href="logout.php"><input type="image" src="images/icons/logout.png" title="Logout" value="Sign Out" style="margin-left:10px;"/></a>
+        </nav>
+
+    </header>
 
         <div class="content-center">
             <div id="topic">Assigned Assets</div>
